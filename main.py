@@ -79,11 +79,11 @@ plot_img(combined_image)
 
 #This call creats the Video by processing the test video frame by frame
 #Comment this line for avoiding the video creation
-start = time.time()
+# start = time.time()
 create_video()
-end = time.time()
-elapsed = end - start
-print(elapsed)
+# end = time.time()
+# elapsed = end - start
+# print(elapsed)
 
 #print('Showing the results from HOG pipeline -- Classical Vision-- \n')
 

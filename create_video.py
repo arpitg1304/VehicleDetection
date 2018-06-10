@@ -4,6 +4,8 @@ Created on Fri Dec 15 03:08:02 2017
 
 @author: Arpit
 """
+import time
+import csv
 from moviepy.editor import VideoFileClip
 from find_lanes import laneDetection
 from test_bigger_images import test_image
@@ -13,8 +15,11 @@ import cv2
 import skimage
 from skimage import io
 
+times = []
+
 # video processing pipeline
 def process_video(img):
+    start = time.time()
 
     history = deque(maxlen=30)
 
@@ -51,9 +56,21 @@ def process_video(img):
             cv2.rectangle(img_lanes, (box[0], box[1]), (box[2],box[3]), (0,0,255), 6)
 
     # Return image with found cars and lanes
+    end = time.time()
+    elapsed = end - start
+    times.append(elapsed)
     return img_lanes
+
 def create_video():
+    global s
+    s = 0
     clip_output = 'output_videos/test_video.mp4'
-    clip = VideoFileClip("test_videos/test_video.mp4")
+
+    clip = VideoFileClip("test_videos/project_video_EDIT.mp4")
+    # clip = VideoFileClip("test_videos/test_video.mp4")
     clip_process = clip.fl_image(process_video)
     clip_process.write_videofile(clip_output, audio=False)
+
+    with open('timestamps.csv', 'w') as myfile:
+        wr = csv.writer(myfile, delimiter=',', quoting=csv.QUOTE_ALL)
+        wr.writerow(times)
